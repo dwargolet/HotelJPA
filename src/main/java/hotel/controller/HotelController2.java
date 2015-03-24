@@ -43,8 +43,10 @@ public class HotelController2 extends HttpServlet {
    private static final String ACTION_DELETE = "delete";
    private static final String ACTION_EDIT = "edit";
    private static final String ACTION_CREATE = "create";
-   
-   
+   private static final String ACTION_SEARCH = "search";
+   private static final int ALL_HOTELS = 0;
+   private static final int SEARCH_BY_STATE = 1;
+   private static final int SEARCH_BY_CITY = 2;
    @EJB
     private HotelFacade hotelService;
    
@@ -124,9 +126,23 @@ public class HotelController2 extends HttpServlet {
                     hotel.setStreetAddress(address);
                     hotelService.edit(hotel);
                 break;
+                case ACTION_SEARCH:
+                    switch(Integer.parseInt(request.getParameter("searchOptions")))
+                    {
+                        case ALL_HOTELS:
+                        break;
+                        case SEARCH_BY_STATE:
+                        request.setAttribute("state", request.getParameter("state"));
+                        break;
+                        case SEARCH_BY_CITY:
+                        request.setAttribute("city", request.getParameter("city"));
+                        break;
+                    }
+                    break;
                 default:
                     break;
             }
+            
         }
         
         List<Hotel> hotels = hotelService.findAll();

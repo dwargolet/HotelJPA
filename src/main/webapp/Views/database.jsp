@@ -8,7 +8,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Hotel Maven</title>
+        <title>Hotel JPA</title>
         <link href="<%= request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet" />
         <link href="<%= request.getContextPath() %>/css/styles.css" rel="stylesheet" />
         <link href="<%= request.getContextPath() %>/css/style.css" rel="stylesheet" /> 
@@ -17,7 +17,7 @@
         
         <nav id="head" class="navbar navbar-default navbar-fixed-top">
             <div id="nav" class="navbar-inner navbar-content-center">
-                <h3>Hotel Lab - <i>Maven Version</i></h3>
+                <h3>Hotel Lab - <i>JPA Version</i></h3>
                 <ul class="nav nav-tabs custom">
                     <li role="presentation"><a href="<%= request.getContextPath() %>/index.jsp">Main</a></li>
                     <li role="presentation"><a href="<%= request.getContextPath() %>/Views/search.jsp">Search Records</a></li>
