@@ -1,9 +1,12 @@
-<%@page import="java.util.ArrayList"%>
-<%@page import="hotel.model.Hotel"%>
+
+<%@page import="hotel.entity.Hotel"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -24,12 +27,7 @@
                     <li role="presentation" class="active"><a href="<%= request.getContextPath() %>/Views/redirect.jsp">Records</a></li>
                 </ul>    
             </div>
-        </nav>
-        
-  
-        
-        
-        
+        </nav>       
         
          <div class="container">
             <div class="row">           
@@ -44,13 +42,13 @@
                             <tbody>
                                 <tr>                                    
                                     <td align="center">${hotel.hotelId}-</td>
-                                    <td align="center"><input type="hidden" id="listedHotelName" value="${hotel.hotelName}"/>${hotel.hotelName}</td><br>
-                                    <td align="center"><input type="hidden" id="listedHotelAddress" value="${hotel.streetAddress}"/>${hotel.streetAddress}</td>
-                                    <td align="center"><input type="hidden" id="listedHotelCity" value="${hotel.city}"/>${hotel.city}</td>
-                                    <td align="center"><input type="hidden" id="listedHotelState" value="${hotel.state}"/>${hotel.state}</td>
+                                   <td align="center"><input type="hidden" id="listedHotelName" value="${hotel.hotelName}"/>${hotel.hotelName}</td><br>
+                                   <td align="center"><input type="hidden" id="listedHotelAddress" value="${hotel.streetAddress}"/>${hotel.streetAddress}</td>
+                                   <td align="center"><input type="hidden" id="listedHotelCity" value="${hotel.city}"/>${hotel.city}</td>
+                                    <td align="center"><input type="hidden" id="listedHotelState" value="${hotel.custState}"/>${hotel.custState}</td>
                                     <td align="center"><input type="hidden" id="listedHotelZip" value="${hotel.zip}"/>${hotel.zip}</td>
                                     <td align="center"><input type="hidden" id="listedHotelNote" value="${hotel.notes}"/>${hotel.notes}</td>
-                                    <td align="center"><input type="radio" id="listedHotelRadio" name="hotelRadio" value="${hotel.hotelId}"/> </td>
+                                    <td align="center"><input type="radio" id="listedHotelRadio" name="hotelRadio" value="${hotel.hotelId}"/></td>
                                 </tr>
                             </tbody>    
                         </table>               
@@ -60,7 +58,7 @@
 <!--         </div>-->
         
         <div class="form-group">
-            <form id="createRecord" name="createRecord"  method="POST" action="<%= request.getContextPath() %>/HotelController2?action=create">
+            <form id="createRecord" name="createRecord"  method="POST" action="<%= request.getContextPath() %>/HotelController?action=create">
                 <a name="createForm"></a>
                 <div class="form-control">
                     <input type="text" name="hotelId" id="hotelId" placeholder="Hotel ID"/>
@@ -89,7 +87,7 @@
         </div>
          </div>  
                 
-                Session Count: ${activeSessionCount}
+                
     <nav id="foot" class="navbar navbar-default navbar-fixed-bottom">
             <div class="navbar-inner navbar-content-center">
                 <button class="btn btn-danger btn-md" type="submit" id="deleteBtn"><i>Delete Record</i></button>
@@ -97,7 +95,13 @@
                 <a class="btn btn-primary btn-md" href="#createForm" role="button" id="gotoBtn">Create Record</a>
                 
             </div>            
-    </nav>            
+    </nav>
+                
+                
+            <sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_USER">
+                Logged in as: <sec:authentication property="principal.username"></sec:authentication> ::
+                <a href='<%= this.getServletContext().getContextPath() + "/j_spring_security_logout"%>'>Log Me Out</a>
+            </sec:authorize>
                 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="resources/js/jquery-sortable-min.js "></script>

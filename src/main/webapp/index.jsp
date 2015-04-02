@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -21,11 +22,18 @@
                 <ul class="nav nav-tabs custom">
                     <li role="presentation" class="active"><a href="<%= request.getContextPath() %>/index.jsp">Main</a></li>
                     <li role="presentation"><a href="<%= request.getContextPath() %>/Views/search.jsp">Search Records</a></li>
-                    <li role="presentation"><a href="<%= request.getContextPath() %>/Views/redirect.jsp">Records</a></li>
+                    <li role="presentation"><a href="<%= request.getContextPath() %>/Views/database.jsp">Records</a></li>
                 </ul>    
             </div>
         </nav>
                 
+                
+        <footer>    
+            <sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_USER">
+                Logged in as: <sec:authentication property="principal.username"></sec:authentication> ::
+                <a href='<%= this.getServletContext().getContextPath() + "/j_spring_security_logout"%>'>Log Me Out</a>
+            </sec:authorize>
+        </footer>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="<%= request.getContextPath() %>/javascript/js.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>

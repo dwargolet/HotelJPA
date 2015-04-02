@@ -13,7 +13,8 @@
     </head>
     <body>
         <%
-            response.sendRedirect(request.getContextPath() + "/HotelController2");
+//            response.sendRedirect(request.getContextPath() + "/HotelController2");
+            response.sendRedirect(request.getContextPath() + "/HotelController");
         %>
     </body>
 </html>

@@ -16,19 +16,17 @@ $(document).ready(function(){
     });
  
         
-    $('#deleteBtn').click(function () {        
-        var hotelId = $("input:radio[name=hotelRadio]:checked").val();
-        createRecord.hotelId.value = hotelId;
-//        window.confirm("Are you sure you want to delete this Hotel?");
-        
-        $('#createRecord').attr('action',  "HotelController2?action=delete");
-         
-        $('#createRecord').submit();
-        return;
+    $('#deleteBtn').click(function () {               
+       if (confirm("Are you sure you want to delete this Hotel?")) {      
+            var hotelId = $("input:radio[name=hotelRadio]:checked").val();
+            createRecord.hotelId.value = hotelId; 
+            $('#createRecord').attr('action',  "HotelController?action=delete");
+            $('#createRecord').submit();
+            return;
+        }
+        return false;     
     });
     
-   
-
     
     
     
@@ -57,22 +55,27 @@ $(document).ready(function(){
                 });
                 
         createRecord.hotelId.value = hotelId;      
-        $('#createRecord').attr('action',  "HotelController2?action=edit");        
+        $('#createRecord').attr('action',  "HotelController?action=edit");        
        
        createBtn.value="Edit Record";
         
         return false;
     });
     
+   
 
-    $('#createBtn').click(function () {  
-        
-        $('#editBtn').prop('disabled', false);
-        $('#deleteBtn').prop('disabled', false);
-        
+    $('#createBtn').click(function () {         
         $('#createRecord').submit();
         return;
     });
+//    $('#createBtn').click(function () {  
+//        
+//        $('#editBtn').prop('disabled', false);
+//        $('#deleteBtn').prop('disabled', false);
+//        
+//        $('#createRecord').submit();
+//        return;
+//    });
 
     $('#searchWizard').change(function(){
          var wizardVal = $('#wizard').val();
