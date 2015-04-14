@@ -20,9 +20,9 @@
             <div class="navbar-inner navbar-content-center">
                 <h3>Hotel Lab - <i>JPA Version</i></h3>
                 <ul class="nav nav-tabs custom">
-                    <li role="presentation" class="active"><a href="<%= request.getContextPath() %>/index.jsp">Main</a></li>
-                    <li role="presentation"><a href="<%= request.getContextPath() %>/Views/search.jsp">Search Records</a></li>
-                    <li role="presentation"><a href="<%= request.getContextPath() %>/Views/database.jsp">Records</a></li>
+                    <li role="presentation" class="active"><a href="<%= request.getContextPath() %>/Views/index.jsp">Main</a></li>
+                    <li role="presentation"><a href="<%= request.getContextPath() %>/Views/searchRedirect.jsp">Search Records</a></li>
+                    <li role="presentation"><a href="<%= request.getContextPath() %>/Views/redirect.jsp">Records</a></li>
                 </ul>    
             </div>
         </nav>

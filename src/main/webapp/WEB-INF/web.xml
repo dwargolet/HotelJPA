@@ -1,33 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
-	 version="3.1">
-    <servlet>
-        <servlet-name>HotelController2</servlet-name>
-        <servlet-class>hotel.controller.HotelController2</servlet-class>
-    </servlet>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+
     <servlet>
         <servlet-name>HotelController</servlet-name>
         <servlet-class>hotel.controller.HotelController</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>HotelController2</servlet-name>
-        <url-pattern>/HotelController2</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>HotelController</servlet-name>
         <url-pattern>/HotelController</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>RegistrationController</servlet-name>
+        <servlet-class>hotel.controller.RegistrationController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegistrationController</servlet-name>
+        <url-pattern>/RegistrationController</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>SearchController</servlet-name>
+        <servlet-class>hotel.controller.SearchController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchController</servlet-name>
+        <url-pattern>/SearchController</url-pattern>
+    </servlet-mapping>
     
-   <!-- Security configuration -->
+    <!-- Security configuration -->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
     <listener>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
-
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:applicationContext.xml</param-value>
@@ -41,7 +46,6 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <!-- end spring configuration -->
-    
     
     <session-config>
         <session-timeout>

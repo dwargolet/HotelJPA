@@ -13,6 +13,7 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,22 +22,23 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * The main controller in this app
  *
- * @author jlombardo
+ * @author Daniel
  */
 public class HotelController extends HttpServlet {
 
     private static final String ACTION_PARAM = "action";
     private static final String ID_PARAM = "hotelId";
-    private static final String LIST_ACTION = "list";
-    private static final String FIND_ONE_ACTION = "findone";
-    private static final String UPDATE_ACTION = "update";
+//    private static final String LIST_ACTION = "list";
+//    private static final String FIND_ONE_ACTION = "findone";
+    private static final String EDIT_ACTION = "edit";
+    private static final String CREATE_ACTION = "create";
     private static final String DELETE_ACTION = "delete";
-    private static final String SEARCH_ACTION = "search";
-    private static final String HOME_PAGE = "/Views/database.jsp";
-    private static final int ALL_HOTELS = 0;
-   private static final int SEARCH_BY_STATE = 1;
-   private static final int SEARCH_BY_CITY = 2;
-    
+//    private static final String SEARCH_ACTION = "search";
+    private static final String RESULT_PAGE = "/Views/database.jsp";
+//    private static final int ALL_HOTELS = 0;
+//    private static final int SEARCH_BY_STATE = 1;
+//    private static final int SEARCH_BY_CITY = 2;
+
     @Inject
     private HotelFacade hotelService;
 
@@ -55,120 +57,87 @@ public class HotelController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         // set default destination
-        String destination = HOME_PAGE;
-        
+        //String destination = HOME_PAGE;
+        RequestDispatcher view;
         // Attempt to get QueryString parameters, may not always be available
         String action = request.getParameter(ACTION_PARAM);
         String hotelId = request.getParameter(ID_PARAM);
-
-        try {
+        String name;
+        String address;
+        String city;
+        String state;
+        String zip;
+        String notes;
+        String stringPk = "";            
+        int pk;
+        
+        Hotel hotel = new Hotel();
+//        try {
+        if(action != null){
             switch (action) {
-                case LIST_ACTION:
-                    refreshHotelList(request, response, hotelService);
-                    break;
-
-                case FIND_ONE_ACTION: {
-                    Hotel hotel = hotelService.find(Integer.valueOf(hotelId));
-                    JsonObjectBuilder builder = Json.createObjectBuilder()
-                            .add("hotelId", hotel.getHotelId())
-                            .add("name", hotel.getHotelName())
-                            .add("address", hotel.getStreetAddress())
-                            .add("city", hotel.getCity())
-                            .add("zip", hotel.getZip());
-
-                    JsonObject hotelJson = builder.build();
-
-                    PrintWriter out = response.getWriter();
-                    response.setContentType("application/json");
-                    out.write(hotelJson.toString());
-                    out.flush();
-                    break;
-                }
-
-                case DELETE_ACTION: {
-                    PrintWriter out = response.getWriter();
-                    hotelService.deleteHotelById(Integer.valueOf(hotelId));
-                    response.setContentType("application/json; charset=UTF-8");
-                    response.setStatus(200);
-                    out.write("{\"success\":\"true\"}");
-                    out.flush();
-                    break;
-                }
-
-                case UPDATE_ACTION: {
-                    PrintWriter out = response.getWriter();
-                    StringBuilder sb = new StringBuilder();
-                    BufferedReader br = request.getReader();
-                    try {
-                        String line;
-                        while ((line = br.readLine()) != null) {
-                            sb.append(line).append('\n');
-                        }
-                    } finally {
-                        br.close();
-                    }
-
-                    String payload = sb.toString();
-                    JsonReader reader = Json.createReader(new StringReader(payload));
-                    JsonObject hotelJson = reader.readObject();
-
-                    // create new entity and populate
-                    Hotel hotel = new Hotel();
-                    hotelId = hotelJson.getString("hotelId");
-                    Integer id = (hotelId == null || hotelId.isEmpty()) ? null : Integer.valueOf(hotelId);
-                    hotel.setHotelId(id);
-                    hotel.setStreetAddress(hotelJson.getString("address"));
-                    hotel.setCity(hotelJson.getString("city"));
-                    hotel.setHotelName(hotelJson.getString("name"));
-                    hotel.setZip(hotelJson.getString("zip"));
-
-                    hotelService.edit(hotel);
-
-                    response.setContentType("application/json; charset=UTF-8");
-                    response.setStatus(200);
-                    out.write("{\"success\":\"true\"}");
-                    out.flush();
-                    break;
-                }
-
-                case SEARCH_ACTION:
-                    JsonObjectBuilder builder = null;
-                    JsonObject hotelJson = null;
-                    String searchKey = request.getParameter("searchKey");
-                    List<Hotel> hotels = hotelService.searchForHotelByAny(searchKey);
-                    // Only return first match or nothing if none found
-                    if(!hotels.isEmpty()) {
-                        Hotel hotel = hotels.get(0);
-                        builder = Json.createObjectBuilder()
-                            .add("hotelId", hotel.getHotelId())
-                            .add("name", hotel.getHotelName())
-                            .add("address", hotel.getStreetAddress())
-                            .add("city", hotel.getCity())
-                            .add("zip", hotel.getZip());
-                        hotelJson = builder.build();
-                    }
+                case CREATE_ACTION:
                     
-                    PrintWriter out = response.getWriter();
-                    response.setContentType("application/json");
-                    if(builder == null) {
-                        out.write("{}");
-                    } else {
-                        out.write(hotelJson.toString());
-                    }
-                    out.flush();
+                    name = request.getParameter("hotelName");
+                    address = request.getParameter("hotelAddress");
+                    city = request.getParameter("hotelCity");
+                    zip = request.getParameter("hotelZip");
+                    state = request.getParameter("hotelState");
+                    notes = request.getParameter("hotelNote");
+
+                    hotel.setCity(city);
+                    hotel.setHotelName(name);
+                    hotel.setNotes(notes);
+                    hotel.setZip(zip);
+                    hotel.setCustState(state);
+                    hotel.setStreetAddress(address);   
+                    hotelService.create(hotel);
+                    
+                    
+                break;
+                case DELETE_ACTION: {
+                    hotelService.deleteHotelById(Integer.valueOf(hotelId));
+                    break;
+                }
+
+                case EDIT_ACTION: {
+
+                    stringPk = request.getParameter("hotelId");
+                    pk = Integer.parseInt(stringPk);
+                    hotel = (Hotel) hotelService.find(pk);
+                    name = request.getParameter("hotelName");
+                    address = request.getParameter("hotelAddress");
+                    city = request.getParameter("hotelCity");
+                    zip = request.getParameter("hotelZip");
+                    state = request.getParameter("hotelState");
+                    notes = request.getParameter("hotelNote");
+                    hotel.setCity(city);
+                    hotel.setHotelName(name);
+                    hotel.setNotes(notes);
+                    hotel.setZip(zip);
+                    hotel.setCustState(state);
+                    hotel.setStreetAddress(address);
+                    
+                    hotelService.edit(hotel);
+                }
+                default:
                     break;
             }
-
-        } catch (IOException | NumberFormatException e) {
-            // Error messages will appear on the destination page if present
-            request.setAttribute("errMessage", e.getMessage());
-
-            // Just in case it's some other exception not predicted
-        } catch (Exception e2) {
-            // Error messages will appear on the destination page if present
-            request.setAttribute("errMessage", e2.getMessage());
         }
 
+//        } catch (IOException | NumberFormatException e) {
+//            // Error messages will appear on the destination page if present
+//            request.setAttribute("errMessage", e.getMessage());
+//
+//            // Just in case it's some other exception not predicted
+//        } catch (Exception e2) {
+//            // Error messages will appear on the destination page if present
+//            request.setAttribute("errMessage", e2.getMessage());
+//        }
+
+        List<Hotel> hotels = hotelService.findAll();
+        request.setAttribute("hotelList", hotels);
+        view = request.getRequestDispatcher(RESULT_PAGE);        
+        view.forward(request, response);
     }
 
     /*
@@ -177,29 +146,29 @@ public class HotelController extends HttpServlet {
      update portions of the page that need updating. Then this refresh 
      operation won't be necessary.
      */
-    private void refreshHotelList(HttpServletRequest request, HttpServletResponse response, HotelFacade hotelService)
-            throws ServletException, IOException {
-
-        List<Hotel> hotels = hotelService.findAllHotels();
-        JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
-
-        hotels.forEach((hotel) -> {
-            jsonArrayBuilder.add(
-                    Json.createObjectBuilder()
-                    .add("hotelId", hotel.getHotelId())
-                    .add("name", hotel.getHotelName())
-                    .add("address", hotel.getStreetAddress())
-                    .add("city", hotel.getCity())
-                    .add("zip", hotel.getZip())
-            );
-        });
-
-        JsonArray hotelsJson = jsonArrayBuilder.build();
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-        out.write(hotelsJson.toString());
-        out.flush();
-    }
+//    private void refreshHotelList(HttpServletRequest request, HttpServletResponse response, HotelFacade hotelService)
+//            throws ServletException, IOException {
+//
+//        List<Hotel> hotels = hotelService.findAllHotels();
+//        JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
+//
+//        hotels.forEach((hotel) -> {
+//            jsonArrayBuilder.add(
+//                    Json.createObjectBuilder()
+//                    .add("hotelId", hotel.getHotelId())
+//                    .add("name", hotel.getHotelName())
+//                    .add("address", hotel.getStreetAddress())
+//                    .add("city", hotel.getCity())
+//                    .add("zip", hotel.getZip())
+//            );
+//        });
+//
+//        JsonArray hotelsJson = jsonArrayBuilder.build();
+//        response.setContentType("application/json");
+//        PrintWriter out = response.getWriter();
+//        out.write(hotelsJson.toString());
+//        out.flush();
+//    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

@@ -18,13 +18,21 @@
         <link href="<%= request.getContextPath() %>/css/style.css" rel="stylesheet" />
     </head>
     <body>
+        <nav id="head" class="navbar navbar-default navbar-fixed-top">
+            <div class="navbar-inner navbar-content-center">
+                <h3>Hotel Lab - <i>JPA Version</i></h3>               
+            </div>
+        </nav>
+        
+        
+        
         <div class="container">
             <form id="signInForm" role="form" method='POST' action="<c:url value='j_spring_security_check' />">
                 <div class="col-sm-6">
                     <h3 style="font-weight: 200;">Sign in </h3>
                     <div class="form-group">
                         <input tabindex="1" class="form-control" id="j_username" name="j_username" placeholder="Email address" type="text" autofocus />
-                        <input tabindex="2" class="form-control" id="j_password" name="j_password" type="password" placeholder="password" />
+                        <input tabindex="2" class="form-control" id="j_password" name="j_password" type="Password" placeholder="password" />
                     </div>
                     <div class="form-group">
                         <input class="btn btn-warning" name="submit" type="submit" value="Sign in" />

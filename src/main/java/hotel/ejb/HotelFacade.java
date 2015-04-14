@@ -12,7 +12,7 @@ import org.springframework.security.access.annotation.Secured;
 
 /**
  *
- * @author jlombardo
+ * @author Daniel
  */
 @Stateless
 public class HotelFacade extends AbstractFacade<Hotel> {

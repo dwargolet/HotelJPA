@@ -20,10 +20,11 @@
         
         <nav id="head" class="navbar navbar-default navbar-fixed-top">
             <div id="nav" class="navbar-inner navbar-content-center">
-                <h3>Hotel Lab - <i>JPA Version</i></h3>
+<!--                <h3>Hotel Lab - <i>JPA Version</i></h3>-->
                 <ul class="nav nav-tabs custom">
                     <li role="presentation"><a href="<%= request.getContextPath() %>/index.jsp">Main</a></li>
-                    <li role="presentation"><a href="<%= request.getContextPath() %>/Views/search.jsp">Search Records</a></li>
+                    <li role="presentation"><a href="<%= request.getContextPath() %>/emailSignUp.jsp">Email</a></li>
+                    <li role="presentation"><a href="<%= request.getContextPath() %>/Views/searchRedirect.jsp">Search Records</a></li>
                     <li role="presentation" class="active"><a href="<%= request.getContextPath() %>/Views/redirect.jsp">Records</a></li>
                 </ul>    
             </div>
@@ -55,7 +56,7 @@
                     </c:forEach>
                 </div>    
             </div>
-<!--         </div>-->
+         </div>
         
         <div class="form-group">
             <form id="createRecord" name="createRecord"  method="POST" action="<%= request.getContextPath() %>/HotelController?action=create">
@@ -85,25 +86,28 @@
                 <input type="button" value="Create Record" id="createBtn" class="btn btn-primary btn-sm" name="createBtn" >
             </form>
         </div>
-         </div>  
-                
+          
+
                 
     <nav id="foot" class="navbar navbar-default navbar-fixed-bottom">
             <div class="navbar-inner navbar-content-center">
-                <button class="btn btn-danger btn-md" type="submit" id="deleteBtn"><i>Delete Record</i></button>
-                <button class="btn btn-success btn-md" type="submit" id="editBtn"><i>Edit Record</i></button>               
-                <a class="btn btn-primary btn-md" href="#createForm" role="button" id="gotoBtn">Create Record</a>
-                
-            </div>            
+                <sec:authorize ifAnyGranted="ROLE_ADMIN">
+                    <button class="btn btn-danger btn-md" type="submit" id="deleteBtn"><i>Delete Record</i></button>
+                    <button class="btn btn-success btn-md" type="submit" id="editBtn"><i>Edit Record</i></button>               
+                    <a class="btn btn-primary btn-md" href="#createForm" role="button" id="gotoBtn">Create Record</a>
+                </sec:authorize>
+            </div>
+        <sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_USER">
+                Logged in as: <sec:authentication property="principal.username"></sec:authentication> ::
+                <a href='<%= this.getServletContext().getContextPath() + "/j_spring_security_logout"%>'>Log Me Out</a>
+        </sec:authorize>
     </nav>
                 
                 
-            <sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_USER">
-                Logged in as: <sec:authentication property="principal.username"></sec:authentication> ::
-                <a href='<%= this.getServletContext().getContextPath() + "/j_spring_security_logout"%>'>Log Me Out</a>
-            </sec:authorize>
+            
                 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="resources/js/jquery-sortable-min.js "></script>
 <script src="<%= request.getContextPath() %>/javascript/js.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>

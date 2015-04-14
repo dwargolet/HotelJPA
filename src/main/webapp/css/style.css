@@ -38,6 +38,13 @@
     
 }
 
+
+#signInForm{
+    width: 300px;
+    margin: 0 auto;
+}
+
+
 .form-control{
     border:1px solid #000000;
 }

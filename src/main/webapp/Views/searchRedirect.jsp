@@ -1,6 +1,6 @@
 <%-- 
-    Document   : redirect
-    Created on : Mar 2, 2015, 7:00:15 PM
+    Document   : searchRedirect
+    Created on : Apr 9, 2015, 1:33:24 PM
     Author     : Daniel
 --%>
 
@@ -13,7 +13,8 @@
     </head>
     <body>
         <%
-            response.sendRedirect(request.getContextPath() + "/HotelController");
+            response.sendRedirect(request.getContextPath() + "/SearchController");
         %>
+        
     </body>
 </html>

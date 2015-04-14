@@ -24,7 +24,7 @@
           http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
           http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
 ">
-        
+<!--    <context:property-placeholder location="D:/email.properties"/>        -->
     <!-- begin Spring Security config -->
     <sec:global-method-security secured-annotations="enabled" />
 
@@ -82,6 +82,35 @@
         
     <!-- (Optional) Automatically receives and logs AuthenticationEvent messages -->
     <bean id="loggerListener" class="org.springframework.security.authentication.event.LoggerListener"/>
+    
+    
+<!--    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="smtp.gmail.com"/>
+        <property name="username" value="${mail.username}"/>
+        <property name="password" value="${mail.password}"/>
+        <property name="port" value="587"/>
+        <property name="javaMailProperties">
+            <props>
+                 Use SMTP transport protocol 
+                <prop key="mail.transport.protocol">smtp</prop>
+                 Use SMTP-AUTH to authenticate to SMTP server 
+                <prop key="mail.smtp.auth">true</prop>
+                 Use TLS to encrypt communication with SMTP server 
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.debug">true</prop>
+            </props>
+        </property>
+    </bean>-->
+    
+    <!-- this is a template message that we can pre-load with default state -->
+<!--    <bean id="templateMessage" class="org.springframework.mail.SimpleMailMessage">
+         if using Gmail, the from must be the address of the account holder 
+        <property name="from" value="${mail.username}"/>
+	 replace the value text with your own 
+        <property name="subject" value="Web App Registration - One More Step Required"/>
+    </bean>-->
+    
+    
      
     <!-- Server managed connection pool accessed via JNDI -->
     <jee:jndi-lookup id="dataSource" jndi-name="jdbc/hotel"/>
